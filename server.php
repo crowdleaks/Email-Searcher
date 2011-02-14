@@ -21,7 +21,7 @@ function AddSearchPhrase($var)
 }
 function GetDatabase()
 {
-	$db = mysql_connect('localhost', 'hbgary', 'PrpAd5hn5cvWc9dV');
+	$db = mysql_connect('localhost', 'hbgary', 'password');
 	mysql_select_db('hbgary',$db);
 	return $db;
 }
