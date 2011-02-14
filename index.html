@@ -1,0 +1,139 @@
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<title>HBGary Emails</title>
+<link rel="stylesheet" type="text/css" media="screen" href="grids-min.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="themes/redmond/jquery-ui-1.8.2.custom.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="themes/ui.jqgrid.css" />
+
+<link rel="stylesheet" type="text/css" media="screen" href="themes/ui.multiselect.css" />
+<script src="js/jquery.min.js" type="text/javascript"></script>
+
+<script src="js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script>
+
+<script src="js/jquery.layout.js" type="text/javascript"></script>
+
+<script src="js/i18n/grid.locale-en.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+	$.jgrid.no_legacy_api = true;
+
+	$.jgrid.useJSON = true;
+
+</script>
+<style>
+	td{cursor:pointer;}
+	label{ display:inline-block; width: 200px;}
+	form div{ margin-bottom:10px;}
+	form .buttons {padding-left: 200px}
+	form input {width:430px;}
+	form .buttons input {width:130px;}
+	form .dates input {width: 200px;}
+	</style>
+
+<script src="js/ui.multiselect.js" type="text/javascript"></script>
+
+<script src="js/jquery.jqGrid.min.js" type="text/javascript"></script>
+
+<script src="js/jquery.tablednd.js" type="text/javascript"></script>
+
+<script src="js/jquery.contextmenu.js" type="text/javascript"></script>
+
+<script language="javascript">
+$(document).ready(function() {
+	
+    jQuery("#jqgajax").jqGrid({
+	ajaxGridOptions : {type:"POST"},
+   	url:'server.php',
+	datatype: "json",
+   	colNames:['Id','Subject', 'From', 'To','Date','link'],
+   	colModel:[
+   		{name:'Id',index:'Id',hidden: true , width:50, key:true},
+   		{name:'Subject',index:'Subject', width:300},
+   		{name:'SentFrom',index:'SentFrom', width:200},
+   		{name:'SentTo',index:'SentTo', width:322},
+   		{name:'EmailDate',index:'EmailDate', width:100},
+   		{name:'link',index:'link', hidden:true, width:100}
+   	],onSelectRow: function(id){ 
+				window.open("http://hbgary.anonleaks.ru/" + jQuery("#jqgajax").jqGrid('getCell', id,'link' ));
+	},
+   	rowNum:20,
+	height: 230,
+   	rowList:[10,20,30],
+   	pager: '#pjqgajax',
+   	sortname: 'Id',
+	height: "100%",
+    viewrecords: true,
+    sortorder: "desc",
+    caption:"Search Results"
+});
+jQuery("#pjqgajax").jqGrid('navGrid','#pjqgajax',{edit:false,add:false,del:false});
+
+var dates = $( "#startDate, #endDate" ).datepicker({
+			defaultDate: "+1w",
+			changeMonth: true,
+			numberOfMonths: 1,
+			onSelect: function( selectedDate ) {
+				var option = this.id == "startDate" ? "minDate" : "maxDate",
+					instance = $( this ).data( "datepicker" );
+					date = $.datepicker.parseDate(
+						instance.settings.dateFormat ||
+						$.datepicker._defaults.dateFormat,
+						selectedDate, instance.settings );
+				dates.not( this ).datepicker( "option", option, date );
+			}
+		});
+});
+
+function GetFormVar(name)
+{
+	return name + "=" + encodeURIComponent($('input[name="' + name + '"]').val());
+}
+
+function post()
+{
+	var serverUrl = "server.php?" + GetFormVar("to") + "&" + GetFormVar("from") + "&" + GetFormVar("startDate") + "&" + GetFormVar("endDate") + "&" + GetFormVar("searchPhrase");
+	jQuery("#jqgajax").jqGrid('setGridParam',{url:serverUrl,page:1}).trigger("reloadGrid");
+
+	return false;
+}
+
+</script>
+</head>
+<body>
+<div id="doc">
+<form method="get">
+<fieldset class="search">
+<legend> Search</legend>
+
+<div>
+<label for="searchPhrase"> Search Phrase</label>
+<input type="text" name="searchPhrase" />
+</div>
+<div>
+<label for="to"> To</label>
+<input type="text"  name="to" />
+</div>
+<div>
+<label for="from"> From</label>
+<input type="text"  name="from" />
+</div>
+<div class="dates">
+<label for="startDate"> Between Dates</label>
+<input type="text" id="startDate" name="startDate" />
+to
+<input type="text" id="endDate" name="endDate" />
+</div>
+<div class="buttons">
+<input type="button" value="Search" onclick="return post()" name="submit" />
+</div>
+</fieldset>
+
+</form>
+<table id="jqgajax"></table>
+<div id="pjqgajax"></div>
+<p>Search tool courtesy of <a href="http://crowdleaks.org">Crowdleaks.org</a>, if you find anything of public interest you can <strong>always</strong> get it published by Crowdleaks</p>
+</div>
+</html>
