@@ -110,7 +110,7 @@ else
 	if ($page > $total_pages) $page=$total_pages;	
 	$start = $limit*$page - $limit; // do not put $limit*($page - 1)
 	if ($start<0) $start = 0;
-	$SQL = GetSQL(false) . " ORDER BY ".$sidx." ".$sord. " LIMIT ".(int)$start." , ".(int)$limit;
+	$SQL = GetSQL(false) . " ORDER BY ".mysql_real_escape_string($sidx)." ".mysql_real_escape_string($sord). " LIMIT ".(int)$start." , ".(int)$limit;
 	$result = mysql_query( $SQL, $db ) or die("Could not execute query.".mysql_error());
 	$responce->page = $page;
 	$responce->total = $total_pages;
