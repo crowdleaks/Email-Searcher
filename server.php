@@ -86,8 +86,15 @@ else
 {
 	$page = $_REQUEST['page']; // get the requested page
 	$limit = $_REQUEST['rows']; // get how many rows we want to have into the grid
-	$sidx = $_REQUEST['sidx']; // get index row - i.e. user click to sort
-	$sord = $_REQUEST['sord']; // get the direction
+	 // get index row - i.e. user click to sort
+	$sord = $_REQUEST['sord'] == "asc"?"asc":"desc"; // get the direction
+	
+	$columns = array('Subject','SentFrom','SentTo','EmailDate');
+	if (in_array($_GET['sort_column'], $columns)) {
+		$sidx = $_REQUEST['sidx'];
+	} else {
+		$sidx = $columns[0];
+	}
 
 	$totalrows = isset($_REQUEST['totalrows']) ? $_REQUEST['totalrows']: false;
 	if($totalrows) {
@@ -110,8 +117,8 @@ else
 	if ($page > $total_pages) $page=$total_pages;	
 	$start = $limit*$page - $limit; // do not put $limit*($page - 1)
 	if ($start<0) $start = 0;
-	$SQL = GetSQL(false) . " ORDER BY ".mysql_real_escape_string($sidx)." ".mysql_real_escape_string($sord). " LIMIT ".(int)$start." , ".(int)$limit;
-	$result = mysql_query( $SQL, $db ) or die("Could not execute query.".mysql_error());
+	$SQL = GetSQL(false) . " ORDER BY ".$sidx." ".$sord. " LIMIT ".(int)$start." , ".(int)$limit;
+	$result = mysql_query( $SQL, $db );
 	$responce->page = $page;
 	$responce->total = $total_pages;
 	$responce->records = $count;
