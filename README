@@ -3,3 +3,27 @@ any issues send a mail to contact@crowdleaks.org
 
 If you wish to use this make sure to link to crowdleaks.org thanking them
 for the work put in making the email searcher
+
+To install a mirror of this on your own machine 
+
+Install git
+
+git clone git://github.com/crowdleaks/Email-Searcher.git
+
+Make it web viewable with a http server with php w/ php-mysql
+
+wget http://search.hbgary.anonleaks.ru/hbgary.7z
+
+Install 7z extractor
+
+Extract 7z file
+
+Create a mysql database called hbgary
+Create a mysql user called hbgary with READ ONLY ACCESS to the database
+
+mysql -u <yourusername> -p hbgary < hbgary.sql
+
+Make sure to check frequently for updates by typeing 
+
+cd /path/to/Email-Searcher
+git pull
