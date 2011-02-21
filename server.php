@@ -82,13 +82,13 @@ $start = $limit*$page - $limit; // do not put $limit*($page - 1)
 if ($start<0) $start = 0;
 $SQL = GetSQL(false) . " ORDER BY ".$sidx." ".$sord. " LIMIT ".(int)$start." , ".(int)$limit;
 $result = mysql_query( $SQL, $db );
-$responce->page = $page;
-$responce->total = $total_pages;
-$responce->records = $count;
+$responce['page'] = $page;
+$responce['total'] = $total_pages;
+$responce['records'] = $count;
 $i=0;
 while($row = mysql_fetch_array($result,MYSQL_ASSOC)) {
-$responce->rows[$i]['Id']=$row['Id'];
-	$responce->rows[$i]['cell']=array($row['Id'],htmlspecialchars($row['Subject']),htmlspecialchars($row['SentFrom']),htmlspecialchars($row['SentTo']), $row['EmailDate'], $row['link']);
+$responce['rows'][$i]['Id']=$row['Id'];
+	$responce['rows'][$i]['cell']=array($row['Id'],htmlspecialchars($row['Subject']),htmlspecialchars($row['SentFrom']),htmlspecialchars($row['SentTo']), $row['EmailDate'], $row['link']);
 	$i++;
 }
 echo json_encode($responce);
