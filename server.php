@@ -53,7 +53,7 @@ $limit = $_REQUEST['rows']; // get how many rows we want to have into the grid
 $sord = $_REQUEST['sord'] == "asc"?"asc":"desc"; // get the direction
 
 $columns = array('Subject','SentFrom','SentTo','EmailDate');
-if (in_array($_GET['sort_column'], $columns)) {
+if (array_key_exists('sort_column', $_REQUEST) && in_array($_REQUEST['sort_column'], $columns)) {
 	$sidx = $_REQUEST['sidx'];
 } else {
 	$sidx = $columns[0];
