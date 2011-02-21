@@ -88,7 +88,7 @@ $responce->records = $count;
 $i=0;
 while($row = mysql_fetch_array($result,MYSQL_ASSOC)) {
 $responce->rows[$i]['Id']=$row[Id];
-	$responce->rows[$i]['cell']=array($row[Id],htmlspecialchars($row[Subject]),htmlspecialchars($row[SentFrom]),htmlspecialchars($row[SentTo]), $row[EmailDate], $row[link]);
+	$responce->rows[$i]['cell']=array($row['Id'],htmlspecialchars($row['Subject']),htmlspecialchars($row['SentFrom']),htmlspecialchars($row['SentTo']), $row['EmailDate'], $row['link']);
 	$i++;
 }
 echo json_encode($responce);
